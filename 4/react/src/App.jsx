@@ -1,33 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import Table from "./Table.jsx";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const source = (() => {
+        const shapes = ['Circle', 'Triangle', 'Square']
+        const colors = ['White', 'Black', 'Blue', 'Red']
+        const source = []
+        for (let i = 0; i < 100; i++) {
+            const shapeIndex = Math.floor((Math.random() * 100) % shapes.length)
+            const colorIndex = Math.floor((Math.random() * 100) % colors.length)
+            source.push({
+                id: i,
+                shape: shapes.at(shapeIndex),
+                color: colors.at(colorIndex),
+                area: Math.floor(Math.random() * 100),
+            })
+        }
+        return source
+    })()
 
-  return (
+    return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Table source={source} />;
     </>
   )
 }

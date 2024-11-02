@@ -12,4 +12,41 @@
  * @param {string} api service api 地址
  * @param {any} data 请求内容
  */
-async function post(api, data) {}
+async function post(url, body) {
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+        });
+
+        if (!response.ok) {
+            return {
+                code: response.status,
+                message: response.statusText || "HTTP Error",
+            };
+        }
+
+        const data = await response.json();
+
+        if (data.code === 200) {
+            return {
+                code: 200,
+                data: data.data,
+            };
+        }
+
+        return {
+            code: data.code,
+            message: data.message || "code不为200",
+        };
+
+    } catch (error) {
+        return {
+            code: 0,
+            message: error.message || "Network Error",
+        };
+    }
+}

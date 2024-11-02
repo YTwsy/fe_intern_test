@@ -5,4 +5,17 @@
 /**
  * @param {(() => Promise<any>)[]} asyncActions
  */
-async function batch(asyncActions) {}
+async function batch(asyncActions) {
+    const results = await Promise.allSettled(asyncActions.map(action => action()));
+
+    const successes = results
+        .filter(result => result.status === "fulfilled")
+        .map(result => result.value);
+
+    const failures = results
+        .filter(result => result.status === "rejected")
+        .map(result => result.reason);
+
+    console.log("成功的操作结果:", successes);
+    console.log("失败的操作结果:", failures);
+}
